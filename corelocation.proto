@@ -1,0 +1,34 @@
+syntax = "proto3";
+package Apple.CoreLocation;
+
+message Response {
+    message Location {
+        int64 latitude = 1;
+        int64 longitude = 2;
+        int32 horizontalAccuracy = 3;
+        int32 unknown4 = 4; // always 0 - don't ask why
+        int32 altitude = 5; // -500 if unknown
+        int32 verticalAccuracy = 6; // Not set if altitude=-500
+        int32 unknown11 = 11; // 5..63 ?
+        int32 unknown12 = 12; // 30..4000 ?
+    }
+
+    message Container {
+        string mac = 1;
+        Location location = 2;
+        int32 channel = 21;
+    }
+
+    repeated Container wifi = 2;
+}
+
+message Request {
+    message Router {
+        string mac = 1;
+    }
+
+    repeated Router router = 2;
+    int32 unknown3 = 3;
+    int32 amount = 4; // how many locations in response
+}
+
