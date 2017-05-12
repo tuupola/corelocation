@@ -56,7 +56,7 @@ class Request
     public function payload()
     {
         $request = new AppleRequest;
-        array_walk($this->routers, function($mac) use ($request) {
+        array_walk($this->routers, function ($mac) use ($request) {
             $requestRouter = new AppleRequestRouter;
             $requestRouter->setMac($mac);
             $request->getRouter()[] = $requestRouter;
@@ -67,7 +67,7 @@ class Request
 
     public function routers(array $routers)
     {
-        array_walk($routers, function($mac) {
+        array_walk($routers, function ($mac) {
             $this->addRouter($mac);
         });
         return $this;
