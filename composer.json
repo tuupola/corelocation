@@ -38,6 +38,7 @@
     },
     "scripts": {
         "test": "composer phplint && composer phpcs",
+        "travis": "composer phplint && composer phpcs",
         "phpcs": "vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf-8 --ignore=*/vendor/*,*/proto/* . -p",
         "phpunit": "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml --coverage-html ./report/",
         "phplint": "vendor/bin/phplint . --exclude=vendor/ --exclude=proto/",
