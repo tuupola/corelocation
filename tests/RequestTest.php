@@ -39,17 +39,13 @@ class RequestTest extends TestCase
         $hex = "12130a1161613a61613a61613a61613a61613a616112130a1162623a6262"
              . "3a62623a62623a62623a6262";
 
-        $routers = ["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"];
-        $request = (new Request)->routers($routers);
-
+        $request = new Request(["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"]);
         $this->assertEquals(hex2bin($hex), $request->payload());
     }
 
     public function testShouldGenerateLengthPrefixedBody()
     {
-        $routers = ["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"];
-        $request = (new Request)->routers($routers);
-
+        $request = new Request(["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"]);
         $header = $request->header();
         $payload = $request->payload();
         $body = $request->body();
@@ -143,23 +139,19 @@ class RequestTest extends TestCase
 
     public function testShouldHydrate()
     {
-        $request = new Request(["locale" => "en_GB"]);
+        $routers = ["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"];
+        $request = new Request($routers, ["locale" => "en_GB"]);
         $self = $this;
         $closure = function () use ($self) {
             $self->assertEquals("en_GB", $this->locale);
         };
 
         call_user_func($closure->bindTo($request, Request::class));
+
+        $closure = function () use ($self, $routers) {
+            $self->assertEquals($routers, $this->routers);
+        };
+
+        call_user_func($closure->bindTo($request, Request::class));
     }
-    // public function testShouldProcessAndParse()
-    // {
-    //     $expected = [
-    //         "latitude" => 7.975332,
-    //         "longitude" => 98.339406,
-    //         "accuracy" => 10,
-    //     ];
-    //     $command = "echo '7.975332,98.339406,10'";
-    //     $result = (new LocateMeAdapter($command))->process();
-    //     $this->assertEquals($expected, $result);
-    // }
 }

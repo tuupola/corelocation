@@ -28,8 +28,9 @@ class Request
     private $routers = [];
     private $amount = 100;
 
-    public function __construct(array $options = [])
+    public function __construct(array $routers = [], array $options = [])
     {
+        $this->routers($routers);
         $this->hydrate($options);
     }
 
