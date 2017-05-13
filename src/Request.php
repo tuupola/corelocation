@@ -105,6 +105,7 @@ class Request
         if ($amount > 500) {
             throw new RuntimeException("Abuse is bad mmmkay?");
         }
+        $this->amount = $amount;
         return $this;
     }
 
