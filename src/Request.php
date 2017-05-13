@@ -62,6 +62,7 @@ class Request
             $requestRouter->setMac($mac);
             $request->getRouter()[] = $requestRouter;
         });
+        $request->setAmount($this->amount);
 
         return $request->serializeToString();
     }
