@@ -37,7 +37,7 @@ class RequestTest extends TestCase
     public function testShouldGeneratePayload()
     {
         $hex = "12130a1161613a61613a61613a61613a61613a616112130a1162623a6262"
-             . "3a62623a62623a62623a6262";
+             . "3a62623a62623a62623a62622064";
 
         $request = new Request(["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"]);
         $this->assertEquals(hex2bin($hex), $request->payload());
