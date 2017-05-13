@@ -18,27 +18,29 @@ namespace Tuupola\CoreLocation;
 /* Protoc generates classes which are mixture of PSR-0 and PSR-4. */
 use Apple\CoreLocation\Response as AppleResponse;
 use RuntimeException;
+use Countable;
 use Iterator;
+use ArrayAccess;
 
-class Response implements Iterator
+class Response implements Iterator, Countable, ArrayAccess
 {
     private $routers = [];
     private $position = 0;
 
-    public function __construct($payload)
+    public function __construct(array $routers = [])
     {
-        $this->routers = $this->parse($payload);
+        $this->routers = $routers;
     }
 
-    public function parse($payload)
+    public function fromString($payload, $skip = 10)
     {
         $response = new AppleResponse;
-        $response->mergeFromString(substr($payload, 10));
+        $response->mergeFromString(substr($payload, $skip));
 
         $routers = [];
         foreach ($response->getWifi() as $router) {
             $location = $router->getLocation();
-            $routers[] = [
+            $this->routers[] = [
                 "mac" => $router->getMac(),
                 "latitude" => $location->getLatitude() * pow(10, -8),
                 "longitude" => $location->getLongitude() * pow(10, -8),
@@ -47,14 +49,16 @@ class Response implements Iterator
             ];
         };
 
-        return $routers;
+        return $this;
     }
 
-    public function routers()
+    /* Methods for Countable. */
+    public function count()
     {
-        return $this->routers;
+        return count($this->routers);
     }
 
+    /* Methods for Iterator. */
     public function rewind()
     {
         $this->position = 0;
@@ -78,5 +82,30 @@ class Response implements Iterator
     public function valid()
     {
         return isset($this->routers[$this->position]);
+    }
+
+    /* Methods for ArrayAccess. */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->routers[] = $value;
+        } else {
+            $this->routers[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->routers[$offset]);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->routers[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return isset($this->routers[$offset]) ? $this->routers[$offset] : null;
     }
 }
