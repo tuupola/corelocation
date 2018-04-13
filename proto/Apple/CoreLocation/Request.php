@@ -95,4 +95,3 @@ class Request extends \Google\Protobuf\Internal\Message
     }
 
 }
-
