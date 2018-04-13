@@ -83,4 +83,3 @@ class Response_Container extends \Google\Protobuf\Internal\Message
     }
 
 }
-

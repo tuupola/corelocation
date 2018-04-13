@@ -38,4 +38,3 @@ class Corelocation
         static::$is_initialized = true;
     }
 }
-

@@ -41,4 +41,3 @@ class Response extends \Google\Protobuf\Internal\Message
     }
 
 }
-

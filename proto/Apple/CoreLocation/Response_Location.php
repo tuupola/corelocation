@@ -248,4 +248,3 @@ class Response_Location extends \Google\Protobuf\Internal\Message
     }
 
 }
-
